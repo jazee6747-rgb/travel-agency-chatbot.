@@ -1,0 +1,28 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    message = data.get("message", "").lower()
+
+    if "flight" in message:
+        reply = "We provide affordable flight booking services."
+    elif "hotel" in message:
+        reply = "We can book 3-star to 5-star hotels for you."
+    elif "tour" in message:
+        reply = "Goa tour packages start from ₹12,999."
+    elif "visa" in message:
+        reply = "Visa assistance is available for selected countries."
+    else:
+        reply = "I can only assist with travel-related questions."
+
+    return jsonify({"reply": reply})
+
+if __name__ == "__main__":
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
